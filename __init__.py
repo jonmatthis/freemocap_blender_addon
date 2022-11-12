@@ -17,17 +17,16 @@ Copyright (C) cgtinker, cgtinker.com, hello@cgtinker.com
 
 
 bl_info = {
-    "name":        "BlendArMocap",
-    "description": "Mediapipe implementation for Blender 2.9+",
-    "author":      "cgtinker",
-    "version":     (1, 5, 2),
+    "name":        "freemocap_blender_addon",
+    "description": "Blender addon to bind `freemocap` data to `rigify` human meta rig - based on fork off `cgtinker/BlendArMocap` ",
+    "author":      "jonmatthis",
+    "version":     (0, 0, 1),
     "blender":     (2, 90, 0),
-    "location":    "3D View > Tool",
-    "warning":     "Requires external packages and elevated privileges",
-    "wiki_url":    "https://github.com/cgtinker/BlendArMocap",
-    "tracker_url": "https://github.com/cgtinker/BlendArMocap/issues",
+    "location":    "3D View > Tool",    
+    "wiki_url":    "https://github.com/jonmatthis/freemocap_blender_addon",
+    "tracker_url": "https://github.com/jonmatthis/freemocap_blender_addon/issues",
     "support":     "COMMUNITY",
-    "category":    "Development"
+    "category":    "Animation"
 }
 
 

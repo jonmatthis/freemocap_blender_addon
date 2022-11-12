@@ -15,11 +15,16 @@ Copyright (C) cgtinker, cgtinker.com, hello@cgtinker.com
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from .cgt_bridge import bpy_hand_bridge, bpy_pose_bridge, bpy_face_bridge, bpy_bridge_interface, print_bridge
-from .cgt_detection import detect_hands, detect_pose, detect_face, detect_holistic, detector_interface, load_freemocap
-from .cgt_patterns import events
-from .cgt_processing import hand_processing, pose_processing, face_processing, processor_interface
-from .cgt_utils import stream
+import sys
+from pathlib import Path
+repo = Path(__file__).parent.parent
+sys.path.insert(0, str(repo))
+
+from src.cgt_bridge import bpy_hand_bridge, bpy_pose_bridge, bpy_face_bridge, bpy_bridge_interface, print_bridge
+from src.cgt_detection import detect_hands, detect_pose, detect_face, detect_holistic, detector_interface, load_freemocap
+from src.cgt_patterns import events
+from src.cgt_processing import hand_processing, pose_processing, face_processing, processor_interface
+from src.cgt_utils import stream
 
 
 class DetectionHandler:
@@ -65,7 +70,7 @@ class DetectionHandler:
         "DEBUG_HOLISTIC":   events.HolisticDriverDebug
     }
 
-    def __init__(self, target: str = "HAND", bridge_type: str = "BPY"):
+    def __init__(self, target: str, bridge_type: str = "BPY"):
         """ Initialize a detection handler using a detection target type and a bridge type.
             A mediapipe model handles the detection in a cv2 stream. The data is getting processed
             for blender. It's also possible to print data using the print bridges.
@@ -85,55 +90,18 @@ class DetectionHandler:
 
         # observers input and feeds processor with detection results
         self.listener = events.UpdateListener()
-        if target == "HOLISTIC":
-            print("called holistic")
-            bridge_type += "_"+target
-        if target == "FREEMOCAP":
-            print("called freemocap")
-            bridge_type = "BPY_FREEMOCAP"
-
+        bridge_type += "_"+target
         self.observer = self.observers[bridge_type]
 
-    def init_detector(self, capture_input=None, dimension: str = "sd", stream_backend: int = 0,
-                      frame_start: int = 0, key_step: int = 1, input_type: int = 1):
-        """ Init stream and detector using preselected detection type.
-            :param capture_input: cap input for cv2 (b.e. int or filepath)
-            :param dimension: dimensions of the cv2 stream ["sd", "hd", "fhd"]
-            :param stream_backend: cv2default or cv2cap_dshow [0, 1]
-            :param frame_start: key frame start in blender timeline
-            :param key_step: keyframe step for capture results
-            :param input_type: `0`: "stream" input, `1`: "movie" or `2`:"freemocap_session"
-            :return: returns nothing: """
+    def init_detector(self, frame_start: int = 0, key_step: int = 1, input_type: int = 2):
+
+
         # initialize the detector
         self.detector = self.detector(frame_start=frame_start, key_step=key_step, input_type=input_type) # noqa
 
-        # stream capture dimensions
-        dimensions_dict = {
-            "sd":  [720, 480],
-            "hd":  [1240, 720],
-            "fhd": [1920, 1080]
-        }
-        dim = dimensions_dict[dimension]
+     
 
-        # default webcam slot (unless freemocap_session)
-        if capture_input is None and input_type is None:
-            capture_input = 0
-
-        if input_type in [0, 1]:
-            # init tracking handler targets
-            self.detector.stream = stream.Webcam(
-                capture_input=capture_input, width=dim[0], height=dim[1], backend=stream_backend
-            )
-
-            # stop if opening stream failed
-            if not self.detector.stream.capture.isOpened():
-                raise IOError("Initializing Detector failed.")
-
-            # initialize mediapipe model
-            self.detector.initialize_model()
-
-        elif input_type == 2:
-            self.detector.initialize_model()
+        self.detector.initialize_model()
 
     def init_bridge(self):
         """ Initialize bridge to print raw data / to blender. """
@@ -161,8 +129,8 @@ class DetectionHandler:
 
 
 def main():
-    handler = DetectionHandler("FACE", "DEBUG")
-    handler.init_detector(0, "sd", 0, 0, 0, 0)
+    handler = DetectionHandler("FREEMOCAP")
+    handler.init_detector()
     handler.init_bridge()
 
     for _ in range(15):
@@ -171,6 +139,9 @@ def main():
     del handler
 
 
-if __name__ == '__main__':
+print(f"hi my name is {__name__}")
+
+if __name__ == '__main__' or __name__ == '<run_path>':
+    print("Running `freemocap_blender_addon` as a __main__ script")
     main()
 

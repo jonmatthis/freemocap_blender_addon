@@ -76,11 +76,10 @@ class CGTProperties(PropertyGroup):
     # endregion
     
     freemocap_session_path: StringProperty(
-        name="Freemocap Session Path",
-        description="path to `freemocap` session folder",
-        default=r"C:\Users\jonma\Dropbox\FreeMoCapProject\FreeMocap_Data\sesh_2022-04-19_11_29_31_testy_westy_2",
+        name="session path",
+        description="Path to `freemocap` session folder",
+        default=r"D:\Dropbox\FreeMoCapProject\FreeMocap_Data\sesh_2022-09-19_16_16_50_in_class_jsm",
         options={'HIDDEN'},
-        maxlen=1024,
         subtype='DIR_PATH'
     )
 

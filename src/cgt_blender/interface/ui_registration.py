@@ -48,7 +48,7 @@ def get_preferences():
 
 
 def register():
-    print('Registing BlendArMocap\n')
+    print('Registering FreeMoCap Blender Add-on\n')
 
     for m_class in get_preferences():
         # print(m_class)
@@ -80,7 +80,7 @@ def register_user_interface():
 
 
 def unregister():
-    print("Unregister BlendArMocap")
+    print('Unregistering FreeMoCap Blender Add-on\n')
     for cls in get_preferences():
         try:
             unregister_class(cls)

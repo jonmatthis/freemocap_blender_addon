@@ -16,13 +16,13 @@ Copyright (C) cgtinker, cgtinker.com, hello@cgtinker.com
 '''
 
 from __future__ import annotations
-
+import logging
 from typing import List
 
 from ..cgt_patterns import observer_pattern as op
 from ..cgt_processing import processor_interface
 
-
+logger = logging.getLogger(__name__)
 class UpdateListener(op.Listener):
     """ Listens to updates of mp-ml tracking data and notifies receivers. """
     _observers: List[op.Observer] = []
@@ -109,7 +109,11 @@ class HolisticBpyUpdateReceiver(op.Observer):
             processor.init_references()
 
     def update(self, _listener: UpdateListener) -> None:
+        debug_string = f"Loading `mediapipe_holistic` data on frame: {_listener.frame}"
+        print(debug_string)
+        logger.info(debug_string)
         for idx, processor in enumerate(self.processors):
+
             if len(_listener.data[idx][0]) < 1:
                 print("data not updated")
                 continue

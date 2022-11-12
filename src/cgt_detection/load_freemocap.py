@@ -61,14 +61,7 @@ class FreemocapLoader(detector_interface.RealtimeDetector):
         self.number_of_frames = self.mediapipe3d_frames_trackedPoints_xyz.shape[0]
         self.number_of_tracked_points = self.mediapipe3d_frames_trackedPoints_xyz.shape[1]
 
-        # remove?
-        # number_of_body_pose_points = 33
-        # number_of_hand_points = 21
-        # number_of_face_points = 468
-        # self.first_body_point = 0
-        # self.first_left_hand_point = number_of_body_pose_points
-        # self.first_right_hand_point = number_of_body_pose_points + number_of_hand_points
-        # self.first_face_point = number_of_body_pose_points + (number_of_hand_points * 2)
+
 
     def get_detection_results(self, mp_res=None):
         if self.frame == self.number_of_frames - 1:
@@ -86,8 +79,7 @@ class FreemocapLoader(detector_interface.RealtimeDetector):
         this_frame_face_data = [[i, p] for i, p in enumerate(this_frame_face_data)]
 
         # left seems to be missing data at idx 0
-        print("LEFT", this_frame_left_hand_data, len(this_frame_left_hand_data))
-        print("RIGHT", this_frame_right_hand_data, len(this_frame_right_hand_data))
+
         holistic_data = [[[this_frame_left_hand_data], [this_frame_right_hand_data]],
                          [this_frame_face_data], this_frame_body_data]
         return holistic_data
