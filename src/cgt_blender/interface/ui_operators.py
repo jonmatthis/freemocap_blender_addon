@@ -166,7 +166,7 @@ class WM_FMC_bind_freemocap_data_to_skeleton(bpy.types.Operator):
     user = None
 
     def execute(self, context):
-        print("[green] beep beep lol")
+        print("Executing `bind freemocap data to skeleton` operator")
         # load rigify human metarig
         #%% create metarig
         bpy.ops.object.armature_human_metarig_add()
